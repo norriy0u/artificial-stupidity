@@ -127,25 +127,28 @@ function renderResponse(question,text,stupidity){
 
   const html=`
   <div class="response-card" id="${id}">
-    <div class="card-header">
-      <div class="card-avatar">A.S.</div>
-      <div class="card-meta">
-        <div class="card-name">A.S.™ AI Assistant</div>
-        <div class="card-model">StupidityGPT-4.2 · ${respTime}ms · Confidence: ${conf}%</div>
+    <div class="r-header">
+      <div class="r-avatar">A.S</div>
+      <div>
+        <div class="r-name">A.S.™ AI Assistant</div>
+        <div class="r-model">StupidityGPT-4.2 · ${respTime}ms response · model=chaos-v4</div>
       </div>
-      <div class="enterprise-badge">⚡ ENTERPRISE</div>
+      <div class="r-conf">confidence: ${conf}%</div>
     </div>
-    <div class="response-text">${escHtml(mainText)}</div>
-    <div class="guarantee">${escHtml(guarantee)}</div>
-    <div class="stupidity-meter">
-      <div class="meter-label"><span>Stupidity Level</span><span id="${id}-pct">${stupidity}%</span></div>
-      <div class="meter-bar"><div class="meter-fill" id="${id}-fill" style="width:0%"></div></div>
-    </div>
-    <div class="reactions">
-      ${VOTE_LABELS.map(v=>`
-        <button class="react-btn" data-id="${id}" data-type="${v.id}">
-          ${v.emoji} ${v.label} <span class="react-count" id="${id}-${v.id}">0</span>
-        </button>`).join('')}
+    <div class="r-body">
+      <div class="r-text">${escHtml(mainText)}</div>
+      <div class="r-guarantee">${escHtml(guarantee)}</div>
+      <div class="meter-wrap">
+        <div class="meter-top"><span>// stupidity_level.measure()</span><span id="${id}-pct">${stupidity}%</span></div>
+        <div class="meter-bar"><div class="meter-fill" id="${id}-fill" style="width:0%"></div></div>
+      </div>
+      <div class="reactions">
+        ${VOTE_LABELS.map(v=>`
+          <button class="react-btn" data-id="${id}" data-type="${v.id}">
+            <span class="react-left">${v.emoji} ${v.label}</span>
+            <span class="react-count" id="${id}-${v.id}">0</span>
+          </button>`).join('')}
+      </div>
     </div>
   </div>`;
 
@@ -195,7 +198,7 @@ function renderWall(){
   const grid=document.getElementById('wall-grid');
   const empty=document.getElementById('wall-empty');
 
-  if(!scored.length){ empty&&(empty.style.display='block'); grid.innerHTML='<div class="wall-empty" id="wall-empty">No disasters yet. Ask something terrible.</div>'; return; }
+  if(!scored.length){ grid.innerHTML='<div class="wall-empty" id="wall-empty">// no disasters yet. ask something terrible.</div>'; return; }
 
   grid.innerHTML=scored.map(e=>{
     const isGold=(e.votes?.delete||0)>=5;
